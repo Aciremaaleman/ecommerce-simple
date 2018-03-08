@@ -27,7 +27,16 @@ function createProductHTML(product) {
 
 drawProducts(data);
 
-function addToCart() {
+function addToCart(id) {
+  let cart;
+  if (localStorage.getItem("cart") === null) {
+    cart = [];
+  } else {
+    cart = JSON.parse(localStorage.getItem("cart"));
+  }
+  cart.push(id);
+  localStorage.setItem("cart", JSON.stringify(cart));
+  console.log(cart);
   /* cuando agrego a carrito, tengo que:
   1) Incrementar en uno mi contador del menu
   2) Guardar mi producto en algun lugar
