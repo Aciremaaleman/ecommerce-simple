@@ -17,6 +17,11 @@ function createProductHTML(product) {
       class='btn btn-primary'>
         Agregar a carrito
       </button>
+      <button data-product-id=${product.id}
+        onclick="removeFromCart(${product.id})"
+        class='btn btn-primary'>
+          Quitar del carrito
+        </button>
     <hr/>
   `;
   let productContainer = document.createElement("div");
@@ -27,22 +32,37 @@ function createProductHTML(product) {
 
 drawProducts(data);
 
-function addToCart() {
+function addToCart(id) {
+  let carritoStorage = localStorage.getItem("cart");
+  let cartIds;
+  if (carritoStorage === null) {
+    cartIds = [];
+  } else {
+    cartIds = JSON.parse(carritoStorage);
+  }
+  cartIds.push(id);
+  console.log(cartIds);
+  localStorage.setItem("cart", JSON.stringify(cartIds));
   /* cuando agrego a carrito, tengo que:
   1) Incrementar en uno mi contador del menu
   2) Guardar mi producto en algun lugar
-  3) Cambiar el boton de agregar a carrito
+  3) Cambiar xel boton de agregar a carrito
   por quitar del carrito
   */
 }
 
-function removeFromCart() {
+function removeFromCart(id) {
   /* cuando agrego a carrito, tengo que:
   1) Decrementar en uno mi contador del menu
   2) Borrar mi producto de algun lugar
   3) Cambiar el boton de quitar del carrito
   por agregar a carrito
   */
+  let cartInfo = JSON.parse(localStorage.getItem("cart"));
+  let indexOfItemToDelete = cartInfo.indexOf(id);
+  cartInfo.splice(indexOfItemToDelete, 1);
+  localStorage.setItem("cart", JSON.stringify(cartInfo));
+  console.log(localStorage.getItem("cart"));
 }
 
 function increaseCounter() {

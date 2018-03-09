@@ -60,6 +60,51 @@
           </tr>
         </tbody>
       </table>
+      <script src="js/data.js"></script>
+
       <script src="js/checkout.js"></script>
+
+      <div id="paypal-button"></div>
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+<script>
+paypal.Button.render(
+  {
+    env: "sandbox", // Or 'sandbox'
+
+    client: {
+      sandbox:
+        "AXKH-5DKtbK7bP27JT4HvjKOQixoSAd833Y_aNqWom4trYfIrtMAQ1QzbrXqG0I5HebbggBP3CMncQVp",
+      production: "xxxxxxxxx"
+    },
+
+    commit: true, // Show a 'Pay Now' button
+
+    payment: function(data, actions) {
+      return actions.payment.create({
+        payment: {
+          transactions: [
+            {
+              amount: { total: calculateTotal(), currency: "MXN" }
+            }
+          ]
+        }
+      });
+    },
+
+    onAuthorize: function(data, actions) {
+      return actions.payment.execute().then(function(payment) {
+        alert("listo");
+        // The payment is complete!
+        // You can now show a confirmation message to the customer
+        console.log("exito");
+        console.log(payment);
+      });
+    }
+  },
+  "#paypal-button"
+);
+</script>
   </body>
 </html>
